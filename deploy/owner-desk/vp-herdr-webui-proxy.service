@@ -1,0 +1,20 @@
+[Unit]
+Description=Authenticated proxy for the Herdr WebUI (VP desk cookie)
+After=network-online.target vp-herdr-webui.service vp-of-agentry.service
+Wants=network-online.target
+Requires=vp-herdr-webui.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/hunter/workspace/herdr-webui
+Environment=VP_AUTH_DB=/home/hunter/workspace/vp-of-agentry/data/messages.sqlite3
+Environment=HERDR_WEBUI_PROXY_BIND=0.0.0.0:8789
+Environment=HERDR_WEBUI_PROXY_BACKEND=127.0.0.1:8788
+Environment=HERDR_WEBUI_PROXY_LOGIN=http://192.168.0.209:8787/
+ExecStart=/usr/bin/python3 /home/hunter/workspace/herdr-webui/scripts/herdr_webui_auth_proxy.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

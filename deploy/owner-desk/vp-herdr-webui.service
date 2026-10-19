@@ -1,0 +1,18 @@
+[Unit]
+Description=Herdr WebUI (external herdr daemon, loopback 8788)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/hunter/workspace/herdr-webui
+ExecStart=/home/hunter/workspace/herdr-webui/target/release/herdr-webui --bind 127.0.0.1:8788 --https off --backend-mode external-herdr
+Restart=on-failure
+RestartSec=3
+# The WebUI trusts loopback by default (localhost_no_auth). Never expose
+# 8788 directly: vp-herdr-webui-proxy.service is the authenticated edge.
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target
