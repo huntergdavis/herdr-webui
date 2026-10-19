@@ -21,6 +21,7 @@ const SHARED_FILE_ICONS_CSS: &str = include_str!("assets/shared/file_icons.css")
 const SHARED_FILE_TREE_CSS: &str = include_str!("assets/shared/file_tree.css");
 const SHARED_COLORS_CSS: &str = include_str!("assets/shared/colors.css");
 const SHARED_TOKENS_CSS: &str = include_str!("assets/shared/tokens.css");
+const SHARED_SCROLLBARS_CSS: &str = include_str!("assets/shared/scrollbars.css");
 const SHARED_PRIMITIVES_CSS: &str = include_str!("assets/shared/primitives.css");
 const SHARED_CONTENT_SEARCH_CSS: &str = include_str!("assets/shared/content_search.css");
 const SHARED_FILE_TREE_JS: &str = include_str!("assets/shared/file_tree.js");
@@ -308,6 +309,10 @@ pub(crate) async fn shared_colors_css(headers: HeaderMap) -> Response {
 
 pub(crate) async fn shared_tokens_css(headers: HeaderMap) -> Response {
     static_text(&headers, SHARED_TOKENS_CSS, "text/css; charset=utf-8")
+}
+
+pub(crate) async fn shared_scrollbars_css(headers: HeaderMap) -> Response {
+    static_text(&headers, SHARED_SCROLLBARS_CSS, "text/css; charset=utf-8")
 }
 
 pub(crate) async fn shared_primitives_css(headers: HeaderMap) -> Response {

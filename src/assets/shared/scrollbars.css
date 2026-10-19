@@ -1,0 +1,95 @@
+/* Owner #941/#943: classic, always-visible, grabbable scrollbars inside the
+   app. Per-app CSS only; no OS/desktop/GTK/browser-wide settings are touched.
+
+   Loaded by BOTH the desktop and mobile shells (and mirrored by the VP desk
+   dashboards in the other repo) so every surface uses the same structure.
+   `scrollbar-width: auto` opts Firefox out of overlay scrollbars; the WebKit
+   pseudo-elements give Chromium a 14px track + thumb even while the pointer
+   is idle. The thumb keeps a 48px minimum so long content never leaves a
+   sliver. Thumb/track contrast is >=3:1: #6c7086 on #181825 is ~3.6:1.
+
+   Track/thumb use the existing Catppuccin tokens, with light-theme overrides
+   at the bottom. */
+body {
+  --sb-size: 14px;
+  --sb-track: var(--panel);
+  --sb-thumb: #6c7086;
+  --sb-thumb-hover: #7f849c;
+}
+
+html,
+body {
+  scrollbar-gutter: stable;
+}
+/* Firefox only. Chromium must keep the ::-webkit-scrollbar path: setting
+   scrollbar-width there switches it to the native scrollbar, which ignores
+   the 48px minimum thumb length and collapses to a sliver on long content. */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: var(--sb-thumb, #6c7086) var(--sb-track, #181825);
+  }
+}
+*::-webkit-scrollbar {
+  width: var(--sb-size, 14px);
+  height: var(--sb-size, 14px);
+}
+*::-webkit-scrollbar-track {
+  background: var(--sb-track, #181825);
+  border-radius: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb, #6c7086);
+  border-radius: 6px;
+  min-height: 48px;
+  min-width: 48px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover, #7f849c);
+}
+*::-webkit-scrollbar-corner {
+  background: var(--sb-track, #181825);
+}
+
+body.light {
+  --sb-track: var(--panel);
+  --sb-thumb: var(--border2);
+  --sb-thumb-hover: #5c6378;
+}
+
+/* Reserve the gutter only on the main vertical scrollers, so the
+   always-visible bar does not shift content when it appears. Small fixed
+   boxes and horizontal-only strips keep their natural width. */
+.sidebar-scroll,
+.terminal-lens-scroller,
+.search-results,
+.modal-backdrop:not(.search-palette) .modal,
+.project-dashboard,
+.workspace-empty-leaf,
+.terminal,
+.terminal.wterm,
+.terminal .wterm,
+.mobile-screen,
+.mobile-terminal-shell,
+.mobile-terminal,
+.mobile-terminal .wterm,
+.mobile-search-results,
+.mobile-tabs-sheet-list,
+.mobile-directory-picker-tree,
+.git-ui-side,
+.git-ui-content,
+.git-ui-header-menu,
+.git-ui-branch-list-scroll,
+.git-ui-list,
+.git-ui-cleanup-confirm-list,
+.file-browser-side,
+.file-browser-pane-body,
+.directory-picker-tree,
+.herdr-markdown-body,
+.herdr-lsp-diagnostics,
+.herdr-content-search-preview,
+.panel-menu,
+.lens-tool-output,
+.worktree-open-list {
+  scrollbar-gutter: stable;
+}

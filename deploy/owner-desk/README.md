@@ -39,6 +39,14 @@ owner signed in on (the session cookie is host-bound), so no second login is
 needed. The iframe URL is built in the browser by
 `src/assets/desktop/app_js/dashboards.js`.
 
+Scrollbars are classic and always visible (owner #941/#943): shared
+`src/assets/shared/scrollbars.css` is loaded by both desktop and mobile
+shells, with a 14px track, 48px minimum thumb, `scrollbar-gutter: stable` on
+main scrollers, and `scrollbar-width: auto` confined to a
+`@supports (-moz-appearance: none)` block so Chromium keeps the WebKit
+pseudo-element path (native Chromium scrollbars ignore the minimum thumb
+length and collapse to a sliver on long content).
+
 Without a valid `vp_session`, the proxy now **redirects** to the desk
 password UI instead of rendering the shell:
 

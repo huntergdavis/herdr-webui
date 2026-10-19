@@ -64,6 +64,7 @@
     }
     loadCss("/assets/shared/colors.css");
     loadCss("/assets/shared/tokens.css");
+    loadCss("/assets/shared/scrollbars.css");
     loadCss("/assets/shared/skeleton.css");
     loadCss("/assets/shared/primitives.css");
     loadCss("/assets/shared/alert-card.css");

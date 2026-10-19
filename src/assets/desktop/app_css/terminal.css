@@ -34,17 +34,6 @@
 .terminal .wterm .term-grid {
   min-width: max-content;
 }
-.terminal-shell::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-.terminal-shell::-webkit-scrollbar-thumb {
-  background: var(--border2);
-  border-radius: 8px;
-}
-.terminal-shell::-webkit-scrollbar-track {
-  background: var(--panel);
-}
 .terminal-follow-button {
   align-items: center;
   background: var(--accent-1, var(--accent));

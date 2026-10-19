@@ -1,0 +1,112 @@
+[
+  {
+    "page": "shell-1440x900",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/shell-1440x900-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/shell-1440x900-page.png"
+  },
+  {
+    "page": "dash-poolrad-1440x900",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-poolrad-1440x900-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-poolrad-1440x900-page.png"
+  },
+  {
+    "page": "dash-operations-1440x900",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-operations-1440x900-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-operations-1440x900-page.png"
+  },
+  {
+    "page": "dash-play-1440x900",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-play-1440x900-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-play-1440x900-page.png"
+  },
+  {
+    "page": "dash-vp-1440x900",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-vp-1440x900-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-vp-1440x900-page.png"
+  },
+  {
+    "page": "shell-390x844",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/shell-390x844-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/shell-390x844-page.png"
+  },
+  {
+    "page": "dash-poolrad-390x844",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-poolrad-390x844-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-poolrad-390x844-page.png"
+  },
+  {
+    "page": "dash-operations-390x844",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-operations-390x844-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-operations-390x844-page.png"
+  },
+  {
+    "page": "dash-play-390x844",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-play-390x844-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-play-390x844-page.png"
+  },
+  {
+    "page": "dash-vp-390x844",
+    "ok": true,
+    "width": 14,
+    "scrollbarWidth": "auto",
+    "scrollbarColor": "auto",
+    "dragged": 12913,
+    "trackClicked": 157,
+    "screenshot": "/tmp/herdr-scrollbars-t21b/dash-vp-390x844-probe.png",
+    "pageScreenshot": "/tmp/herdr-scrollbars-t21b/dash-vp-390x844-page.png"
+  }
+]

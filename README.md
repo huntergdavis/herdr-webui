@@ -99,6 +99,7 @@ The README is the project summary and documentation index. Detailed functionalit
 
 - Multi-workspace terminal UI with desktop and mobile layouts, backed by the built-in backend by default.
 - Top-left **Dashboards** pane framing the VP desk's four standalone dashboards (Poolrad, Operations, Play Poolrad, VP of Agentry) on the host the owner signed in on, with the existing terminal/workspace navigation unchanged and no second login.
+- Classic always-visible 14px scrollbars across desktop and mobile shell scrollers, with a 48px minimum thumb, accessible Catppuccin track/thumb contrast, stable gutters, and Firefox `scrollbar-width: auto` scoped behind `@supports` so Chromium keeps the grabbable WebKit thumb.
 - Browser terminals use a shared wterm/Ghostty renderer adapter with Settings-backed renderer choice, link detection, mouse-reporting opt-in, scroll speed, Tail follow, large-paste chunking, and temporary terminal parity.
 - Backend-aware session manager that detects built-in and external Herdr sessions, switches between them, and can create or launch sessions in either backend.
 - Built-in backend agent detection with Herdr-style argv/process-tree labels and screen status rules for visible idle, working, and blocked states across common coding agents.

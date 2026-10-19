@@ -7566,13 +7566,17 @@ describe("a11y audit contract", () => {
 
   it("gives the sidebar panes a visible and keyboard scroll affordance", () => {
     const chromeCss = read("./desktop/app_css/chrome.css");
-    // macOS overlay scrollbars render nothing on overflow:auto, so a
-    // clipped agents pane showed no scroll signal at all: the scroller
-    // needs a styled thin scrollbar plus a stable gutter.
+    const baseCss = read("./shared/scrollbars.css");
+    // Owner #941/#943: classic always-visible scrollbars, not macOS overlay
+    // thin bars. The sidebar scroller opts into the same global 14px
+    // Catppuccin track/thumb as every other scroll container and keeps a
+    // stable gutter so a clipped agents pane never shifts.
     match(chromeCss, /\.sidebar-scroll \{[\s\S]*?scrollbar-gutter: stable;/);
-    match(chromeCss, /\.sidebar-scroll \{[\s\S]*?scrollbar-width: thin;/);
-    match(chromeCss, /\.sidebar-scroll::-webkit-scrollbar \{[\s\S]*?width: 8px;/);
-    match(chromeCss, /\.sidebar-scroll::-webkit-scrollbar-thumb \{[\s\S]*?background: var\(--border2\);/);
+    match(chromeCss, /\.sidebar-scroll \{[\s\S]*?scrollbar-width: auto;/);
+    match(baseCss, /--sb-size: 14px;/);
+    match(baseCss, /--sb-thumb: #6c7086;/);
+    match(baseCss, /\*::-webkit-scrollbar \{[\s\S]*?width: var\(--sb-size, 14px\);/);
+    match(baseCss, /\*::-webkit-scrollbar-thumb \{[\s\S]*?background: var\(--sb-thumb, #6c7086\);/);
     // Wheel chaining stops at the pane instead of scrolling the page
     // behind the sidebar.
     match(chromeCss, /\.sidebar-scroll \{[\s\S]*?overscroll-behavior: contain;/);
@@ -7588,15 +7592,21 @@ describe("a11y audit contract", () => {
   });
 
   it("gives the other overlay scroll surfaces a visible scrollbar too (audit fix)", () => {
-    const chromeCss = read("./desktop/app_css/chrome.css");
-    // Same glitch family as the sidebar panes, found by the app-wide
-    // overflow audit: the chat-lens transcript, the settings modal, and
-    // the search palette results all scroll with default macOS overlay
-    // scrollbars (invisible until dragged). One shared selector list in
-    // chrome.css gives each the slim visible thumb.
-    match(chromeCss, /\.terminal-lens-scroller,\n\.search-results,\n\.modal-backdrop:not\(\.search-palette\) \.modal \{[\s\S]*?scrollbar-width: thin;/);
-    match(chromeCss, /\.terminal-lens-scroller::-webkit-scrollbar-thumb,\n\.search-results::-webkit-scrollbar-thumb,/);
-    match(chromeCss, /\.search-results::-webkit-scrollbar-thumb,\n\.modal-backdrop:not\(\.search-palette\) \.modal::-webkit-scrollbar-thumb \{[\s\S]*?background: var\(--border2\);/);
+    const chromeCss = read("./shared/scrollbars.css");
+    // Same glitch family as the sidebar panes: the chat-lens transcript,
+    // settings modal, and search palette results all scroll with default
+    // macOS overlay bars. One global rule now gives every scroller the
+    // same classic 14px track/thumb with a grabbable 48px minimum thumb.
+    match(chromeCss, /@supports \(-moz-appearance: none\) \{[\s\S]*?scrollbar-width: auto;[\s\S]*?scrollbar-color: var\(--sb-thumb, #6c7086\) var\(--sb-track, #181825\);/);
+    match(chromeCss, /\*::-webkit-scrollbar \{[\s\S]*?width: var\(--sb-size, 14px\);[\s\S]*?height: var\(--sb-size, 14px\);/);
+    match(chromeCss, /\*::-webkit-scrollbar-thumb \{[\s\S]*?min-height: 48px;[\s\S]*?min-width: 48px;/);
+    for (const selector of [
+      ".terminal-lens-scroller",
+      ".search-results",
+      ".modal-backdrop:not(.search-palette) .modal",
+    ]) {
+      ok(chromeCss.includes(selector), `${selector} must stay covered`);
+    }
     // Lens transcript keeps its keyboard path (tabindex 0 + autofocus on
     // open lives in lens.js) so the thumb is the only missing piece.
     const lensSource = read("./desktop/app_js/lens.js");
@@ -7604,12 +7614,12 @@ describe("a11y audit contract", () => {
   });
 
   it("covers the lazily-loaded feature bundles' scroll surfaces (audit pass 2)", () => {
-    const chromeCss = read("./desktop/app_css/chrome.css");
+    const chromeCss = read("./shared/scrollbars.css");
     // The git UI, file browser, directory picker, and markdown preview
     // bundles load lazily via HerdrLoadCss, but they land in the same
-    // document cascade, so their scrollbar rules live in chrome.css with
-    // the rest of the family. Pin each surface's presence in the shared
-    // thin/width groups so a rename cannot silently drop one.
+    // document cascade. The global scrollbar rule covers them; the stable
+    // gutter list must keep naming every surface so a rename cannot
+    // silently drop one from the always-visible contract.
     const surfaces = [
       ".git-ui-side",
       ".git-ui-content",
@@ -7631,11 +7641,7 @@ describe("a11y audit contract", () => {
       // String.raw: template literals eat \s/\{ escapes (unknown escapes
       // drop the backslash), which would silently weaken the pins.
       const escaped = surface.replace(".", "\\.");
-      match(chromeCss, new RegExp(String.raw`${escaped}(?:,| \{)\n`));
-      match(chromeCss, new RegExp(String.raw`${escaped}::-webkit-scrollbar(?:,| \{)`));
-      match(chromeCss, new RegExp(String.raw`${escaped}::-webkit-scrollbar-thumb(?:,| \{)[\s\S]*?background: var\(--border2\);`));
-      match(chromeCss, new RegExp(String.raw`${escaped}::-webkit-scrollbar-thumb:hover ?(?:,|\{)[\s\S]*?background: var\(--muted\);`));
-      match(chromeCss, new RegExp(String.raw`${escaped}::-webkit-scrollbar-track ?(?:,|\{)[\s\S]*?background: transparent;`));
+      match(chromeCss, new RegExp(String.raw`${escaped}(?:,| \{)`));
     }
   });
 });

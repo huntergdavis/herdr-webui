@@ -68,7 +68,7 @@
   background: var(--panel2, var(--panel));
   min-height: 34px;
   overflow-x: auto;
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   /* Anchor for the Phase 5 drag caret (see .pane-drop-caret below). */
   position: relative;
 }
