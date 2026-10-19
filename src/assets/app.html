@@ -17,6 +17,10 @@
           ><button class="mini" id="settingsToggle" title="Settings" aria-label="Settings">⚙</button
           ><button class="btn shell-action header-actions-button" id="headerActionsButton" title="Search and actions" aria-label="Search and actions"><span aria-hidden="true">⌕</span><span>Actions</span></button>
         </div>
+        <div class="dashboards-section" id="dashboardsSection" aria-label="Dashboards">
+          <div class="section-header">Dashboards</div>
+          <nav class="dashboards" id="dashboards" aria-label="Dashboards"></nav>
+        </div>
         <div class="section">
           <div class="muted" id="versions">webui - · backend -</div>
           <div id="workspaces"></div>
@@ -42,6 +46,23 @@
             <div class="terminal" id="terminal"></div>
           </div>
         </div>
+        <section class="dashboard-view" id="dashboardView" aria-label="Dashboard" hidden>
+          <header class="dashboard-view-head">
+            <div class="dashboard-view-heading">
+              <span class="dashboard-view-kicker">DASHBOARD</span>
+              <h1 id="dashboardTitle">Dashboard</h1>
+              <p id="dashboardMeta"></p>
+            </div>
+            <div class="dashboard-view-actions">
+              <button class="btn" id="dashboardBack" type="button" title="Back to terminals" aria-label="Back to terminals">Terminals</button>
+              <button class="btn" id="dashboardReload" type="button" title="Reload this dashboard" aria-label="Reload this dashboard">Reload</button>
+              <button class="btn" id="dashboardPopout" type="button" title="Open this dashboard in a new tab" aria-label="Open this dashboard in a new tab">Open in new tab</button>
+            </div>
+          </header>
+          <div class="dashboard-view-body">
+            <iframe id="dashboardFrame" title="Dashboard" loading="eager" referrerpolicy="same-origin"></iframe>
+          </div>
+        </section>
       </main>
       <button class="sidebar-toggle right-sidebar-toggle" id="rightSidebarToggle" title="Hide workspace views" aria-label="Hide workspace views">›</button>
       <nav class="right-sidebar-rail" id="rightSidebarRail" aria-label="Workspace views">

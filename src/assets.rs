@@ -100,6 +100,8 @@ const DESKTOP_JS: &str = concat!(
     include_str!("assets/desktop/app_js/workspace_panes.js"),
     include_str!("assets/desktop/app_js/pane_terminals.js"),
     include_str!("assets/desktop/app_js/render.js"),
+    include_str!("assets/desktop/app_js/dashboards.js"),
+    include_str!("assets/desktop/app_js/session_guard.js"),
     include_str!("assets/desktop/app_js/terminal.js"),
     include_str!("assets/desktop/app_js/lens.js"),
     include_str!("assets/desktop/app_js/prompt_cards.js"),

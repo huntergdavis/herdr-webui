@@ -30,7 +30,32 @@ one.
 | --- | --- | --- |
 | `vp-herdr-webui.service` | `127.0.0.1:8788` | Upstream WebUI in `--backend-mode external-herdr`. Loopback only; its default localhost trust is never exposed. |
 | `vp-herdr-webui-proxy.service` | `0.0.0.0:8789` | Raw TCP/WebSocket proxy. Validates the desk's `vp_session` cookie against `vp-of-agenty/data/messages.sqlite3` before forwarding to 8788. |
-| VP desk | `0.0.0.0:8787` | Existing owner login. `GET /api/herdr-webui` returns the iframe URL from `VP_HERDR_WEBUI_URL`. |
+| VP desk | `0.0.0.0:8787` | Existing owner login and dashboard provider. `GET /api/herdr-webui` returns the iframe URL from `VP_HERDR_WEBUI_URL`. |
+
+The WebUI shell also has its own top-left **Dashboards** pane with Poolrad,
+Operations, Play Poolrad, and VP of Agentry. Those entries frame the desk's
+`/dash/<name>` routes on the fixed desk port 8787, following the hostname the
+owner signed in on (the session cookie is host-bound), so no second login is
+needed. The iframe URL is built in the browser by
+`src/assets/desktop/app_js/dashboards.js`.
+
+Without a valid `vp_session`, the proxy now **redirects** to the desk
+password UI instead of rendering the shell:
+
+```
+GET http://<host>:8789/... -> 302 http://<host>:8787/?next=<encoded original>
+```
+
+The desk login must honor `next` for the return trip. The shell itself never
+renders terminal or dashboard content without the cookie. Do not expose 8788
+directly or bypass the proxy.
+
+The shell also polls a same-origin `GET /__herdr_auth` probe every 30s (and
+when the tab becomes visible). The proxy answers `204` while the session is
+alive and `401` when it is gone; the shell then redirects to the desk login
+with the current URL as `next`. This keeps an already-open terminal from
+outliving an expired desk session. The probe never redirects, so `fetch`
+cannot mistake a login page for success.
 
 The desk's "Herdr web UI" nav item embeds `http://<desk-host>:8789/`.
 Cookies are host-scoped, not port-scoped, so the iframe already carries the

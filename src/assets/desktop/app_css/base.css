@@ -778,3 +778,135 @@ body.light .agent-status.done {
 .section .item.active {
   content-visibility: visible;
 }
+
+/* Top-left Dashboards pane. Kept outside `.section` on purpose: core.js
+   restructures the first `.side .section` into the Workspaces/Agents split,
+   so the dashboard list must not be that node. */
+.dashboards-section {
+  flex: none;
+  padding: 0 10px;
+}
+.dashboards-section .section-header {
+  margin: 10px 0 6px;
+}
+.dashboards {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+}
+.dashboard-nav-item {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--fg);
+  display: flex;
+  font: inherit;
+  gap: 9px;
+  padding: 7px 8px;
+  text-align: left;
+  width: 100%;
+}
+.dashboard-nav-item:hover {
+  background: var(--border);
+  border-color: var(--border2);
+}
+.dashboard-nav-item.active {
+  background: var(--accent-2);
+  border-color: var(--accent-2-border);
+}
+.dashboard-nav-icon {
+  align-items: center;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--accent);
+  display: flex;
+  flex: none;
+  font-size: 14px;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+.dashboard-nav-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.dashboard-nav-text strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+.dashboard-nav-text small {
+  color: var(--muted);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Framed VP desk dashboard. The workspace/terminal shell stays mounted
+   underneath (one shared terminal connection), hidden by the parent class
+   instead of being torn down. */
+.main.dashboard-open .workspace-panes {
+  display: none;
+}
+.dashboard-view {
+  background: var(--bg);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+.dashboard-view[hidden] {
+  display: none;
+}
+.dashboard-view-head {
+  align-items: center;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex: none;
+  gap: 12px;
+  padding: 10px 14px;
+}
+.dashboard-view-heading {
+  min-width: 0;
+}
+.dashboard-view-kicker {
+  color: var(--muted);
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dashboard-view-heading h1 {
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 1px 0 0;
+}
+.dashboard-view-heading p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 2px 0 0;
+}
+.dashboard-view-actions {
+  display: flex;
+  flex: none;
+  gap: 6px;
+  margin-left: auto;
+}
+.dashboard-view-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.dashboard-view-body iframe {
+  background: var(--bg);
+  border: 0;
+  display: block;
+  height: 100%;
+  width: 100%;
+}

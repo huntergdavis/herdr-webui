@@ -98,6 +98,7 @@ The README is the project summary and documentation index. Detailed functionalit
 ## Functionality summary
 
 - Multi-workspace terminal UI with desktop and mobile layouts, backed by the built-in backend by default.
+- Top-left **Dashboards** pane framing the VP desk's four standalone dashboards (Poolrad, Operations, Play Poolrad, VP of Agentry) on the host the owner signed in on, with the existing terminal/workspace navigation unchanged and no second login.
 - Browser terminals use a shared wterm/Ghostty renderer adapter with Settings-backed renderer choice, link detection, mouse-reporting opt-in, scroll speed, Tail follow, large-paste chunking, and temporary terminal parity.
 - Backend-aware session manager that detects built-in and external Herdr sessions, switches between them, and can create or launch sessions in either backend.
 - Built-in backend agent detection with Herdr-style argv/process-tree labels and screen status rules for visible idle, working, and blocked states across common coding agents.
@@ -115,6 +116,7 @@ See [Features](docs/features.md) for full behavior details.
 ## Technical summary
 
 - Backend: Rust Axum server, explicit authenticated API routes, embedded assets, built-in terminal multiplexer, external Herdr protocol bridge, Git/file-system operations.
+- Owner-desk auth boundary: the loopback WebUI (8788) is fronted by a cookie-validating proxy (8789) that reuses the VP desk `vp_session`; unauthenticated requests redirect to the desk password UI with the requested URL preserved, and an authenticated liveness probe ejects an open shell if the session expires.
 - Built-in status detection: argv/process-tree labels plus screen-text fallbacks for Amp, Antigravity, Claude, Claurst, Cline, Codex, Cursor, Devin, Droid, Gemini, GitHub Copilot, Grok, Hermes, Jcode, Kilo, Kimi, Kiro, Maki, OpenCode, Pi, Qoder CLI, and Qwen.
 - Frontend: vanilla JS/CSS assets, no runtime framework, shared modules for the HTTP client, tree rendering, icons, editor mounting, content search, wterm/Ghostty terminal helpers, and theme tokens.
 - Editor: CodeMirror loads on first editor use and is reused for previews and editing; shared editor code provides find in preview plus replace in edit mode.

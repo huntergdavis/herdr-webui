@@ -73,6 +73,9 @@ let state = {
   ws: null,
   tab: null,
   pane: null,
+  // Non-null while the left "Dashboards" nav is showing a framed VP desk
+  // dashboard. Terminal/workspace navigation clears it (see go()).
+  dashboard: null,
   terminalId: null,
   termCols: null,
   termRows: null,
@@ -3999,6 +4002,11 @@ function navigateSelection(e, ws, tab, pane) {
   return false;
 }
 function go(ws, tab, pane) {
+  // A dashboard frame owns the center column while it is open. Any explicit
+  // terminal/workspace navigation returns to the terminal shell first, so
+  // the route and the visible surface never disagree.
+  if (typeof globalThis.HerdrCloseDashboard === "function")
+    globalThis.HerdrCloseDashboard();
   // Explicit navigation (workspace switch, tab/pane click, search result,
   // agent pick): persist the selection per session+backend so reopening the
   // session restores exactly this surface. Without this, only close-fallback

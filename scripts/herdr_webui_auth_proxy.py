@@ -25,8 +25,10 @@ Environment:
   HERDR_WEBUI_PROXY_BACKEND  upstream address     (default 127.0.0.1:8788)
   VP_AUTH_DB                 desk SQLite DB       (default
                              /home/hunter/workspace/vp-of-agenty/data/messages.sqlite3)
-  HERDR_WEBUI_PROXY_LOGIN    desk login URL shown on 401
-                             (default http://127.0.0.1:8787/)
+  HERDR_WEBUI_PROXY_LOGIN    desk login URL base (default
+                             http://127.0.0.1:8787/). The host is replaced
+                             with the request host and `next` points back here.
+  HERDR_WEBUI_PROXY_DESK_PORT  VP desk port used in redirects (default 8787)
 """
 
 from __future__ import annotations
@@ -34,22 +36,25 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import os
+import re
 import sqlite3
 import sys
 import time
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 
 BIND = os.environ.get("HERDR_WEBUI_PROXY_BIND", "0.0.0.0:8789")
 BACKEND = os.environ.get("HERDR_WEBUI_PROXY_BACKEND", "127.0.0.1:8788")
 AUTH_DB = os.environ.get(
     "VP_AUTH_DB",
-    "/home/hunter/workspace/vp-of-agenty/data/messages.sqlite3",
+    "/home/hunter/workspace/vp-of-agentry/data/messages.sqlite3",
 )
 LOGIN_URL = os.environ.get("HERDR_WEBUI_PROXY_LOGIN", "http://127.0.0.1:8787/")
+DESK_PORT = int(os.environ.get("HERDR_WEBUI_PROXY_DESK_PORT", "8787"))
 MAX_HEADER_BYTES = 64 * 1024
 HEADER_TIMEOUT_S = 15.0
 CONNECT_TIMEOUT_S = 10.0
 COOKIE_NAME = "vp_session"
+HOST_RE = re.compile(r"^[A-Za-z0-9._:\[\]-]+$")
 
 
 def _host_port(value: str) -> tuple[str, int]:
@@ -92,22 +97,76 @@ def _cookie_from_headers(headers: dict[str, str]) -> str:
 
 
 
-def _deny() -> bytes:
-    body = (
-        "<!doctype html><meta charset='utf-8'><title>Sign in required</title>"
-        "<body style='font-family:system-ui;background:#0b1116;color:#dbe7ee;"
-        "padding:2rem'><h2>Sign in required</h2>"
-        "<p>The Herdr web UI is available after signing in to the VP desk.</p>"
-        f"<p><a style='color:#83c6ed' href='{LOGIN_URL}'>Open the VP desk</a></p>"
-    )
-    payload = body.encode()
+def _hostname_for_url(host_header: str) -> str:
+    """Hostname (with IPv6 brackets) from a Host header, never a path."""
+    value = (host_header or "").strip()
+    if not value or not HOST_RE.match(value):
+        return "127.0.0.1"
+    if value.startswith("["):
+        end = value.find("]")
+        return value[: end + 1] if end > 0 else "127.0.0.1"
+    host, sep, port = value.rpartition(":")
+    if sep and port.isdigit():
+        return host
+    return value
+
+
+def _request_target(request_line: str) -> str:
+    parts = (request_line or "").split()
+    target = parts[1] if len(parts) > 1 else "/"
+    return target if target.startswith("/") else "/"
+
+
+def _login_redirect_location(host_header: str, request_line: str) -> str:
+    """Desk password URL with the original proxy URL preserved as `next`.
+
+    The request host is the host the owner used, so the desk login page and
+    its cookie stay on that hostname. The desk port is fixed (8787) because
+    the proxy (8789) and the desk are separate listeners by design.
+    """
+    parsed = urlsplit(LOGIN_URL)
+    scheme = parsed.scheme or "http"
+    login_path = parsed.path or "/"
+    hostname = _hostname_for_url(host_header)
+    original_host = host_header.strip() if host_header.strip() else f"{hostname}:{DESK_PORT}"
+    original = f"{scheme}://{original_host}{_request_target(request_line)}"
+    params = [(name, value) for name, value in parse_qsl(parsed.query, keep_blank_values=True)
+              if name != "next"]
+    params.append(("next", original))
+    return urlunsplit((scheme, f"{hostname}:{DESK_PORT}", login_path,
+                       urlencode(params, quote_via=quote, safe=""), ""))
+
+
+def _redirect_to_login(host_header: str, request_line: str) -> bytes:
+    location = _login_redirect_location(host_header, request_line)
     return (
-        b"HTTP/1.1 401 Unauthorized\r\n"
-        b"Content-Type: text/html; charset=utf-8\r\n"
+        b"HTTP/1.1 302 Found\r\n"
         b"Cache-Control: no-store\r\n"
         b"Connection: close\r\n"
-        + f"Content-Length: {len(payload)}\r\n\r\n".encode()
-        + payload
+        + f"Location: {location}\r\n".encode("iso-8859-1")
+        + b"Content-Length: 0\r\n\r\n"
+    )
+
+
+def _auth_probe_response(valid: bool) -> bytes:
+    """Same-origin liveness probe for the shell's session watcher.
+
+    It must NOT redirect: the shell script distinguishes 204 (session still
+    alive) from 401 (session gone) and performs the user-visible redirect
+    itself. A 302 here would be followed by fetch and look like success.
+    """
+    if valid:
+        return (
+            b"HTTP/1.1 204 No Content\r\n"
+            b"Cache-Control: no-store\r\n"
+            b"Connection: close\r\n"
+            b"Content-Length: 0\r\n\r\n"
+        )
+    return (
+        b"HTTP/1.1 401 Unauthorized\r\n"
+        b"Cache-Control: no-store\r\n"
+        b"Connection: close\r\n"
+        b"Content-Length: 0\r\n\r\n"
     )
 
 
@@ -222,8 +281,14 @@ async def _handle(
         except ValueError:
             content_length = 0
         cookie = _cookie_from_headers(headers)
-        if not _session_valid(cookie):
-            writer.write(_deny())
+        valid = _session_valid(cookie)
+        target_path = urlsplit(_request_target(request_line)).path
+        if target_path == "/__herdr_auth":
+            writer.write(_auth_probe_response(valid))
+            await writer.drain()
+            return
+        if not valid:
+            writer.write(_redirect_to_login(headers.get("host", ""), request_line))
             await writer.drain()
             return
 

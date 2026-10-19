@@ -80,6 +80,11 @@ function render() {
   syncBrowserFavicon();
   syncProjectDashboard();
   syncWorkspaceEmptyLeaf();
+  // Dashboards own the center column when active. The module is loaded after
+  // this file, so resolve it dynamically (same pattern as the other optional
+  // desktop surfaces).
+  if (typeof globalThis.HerdrSyncDashboardShell === "function")
+    globalThis.HerdrSyncDashboardShell();
   if (state.editingTab) {
     const input = document.querySelector(".tab-rename-input");
     if (input && document.activeElement !== input) {

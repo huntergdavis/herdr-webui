@@ -184,6 +184,8 @@ describe("app bundle load", () => {
       "./desktop/app_js/search_panel.js",
       "./desktop/app_js/workspace_panes.js",
       "./desktop/app_js/render.js",
+      "./desktop/app_js/dashboards.js",
+      "./desktop/app_js/session_guard.js",
       "./desktop/app_js/terminal.js",
       "./desktop/app_js/worktrees.js",
       "./desktop/app_js/shortcuts.js",
