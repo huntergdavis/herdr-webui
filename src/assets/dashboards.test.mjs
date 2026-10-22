@@ -69,7 +69,7 @@ function makeContext({ hostname = "cell", hash = "" } = {}) {
     return buttons.get(key);
   };
   const nav = fakeElement("dashboards");
-  for (const key of ["poolrad", "operations", "play", "vp"]) buttonFor(key);
+  for (const key of ["operations", "play", "vp"]) buttonFor(key);
   nav.querySelectorAll = (selector) =>
     selector === "[data-dashboard]" ? [...buttons.values()] : [];
   elements.set("dashboards", nav);
@@ -127,19 +127,19 @@ describe("dashboards pane", () => {
     const entries = ctx.HerdrDashboards.entries();
     assert.deepEqual(
       Array.from(entries, (entry) => String(entry.label)),
-      ["Poolrad", "Operations", "Play Poolrad", "VP of Agentry"],
+      ["Operations", "Play Poolrad", "VP of Agentry"],
     );
     assert.deepEqual(
       Array.from(entries, (entry) => String(entry.path)),
-      ["/dash/poolrad", "/dash/operations", "/dash/play", "/dash/vp"],
+      ["/dash/operations", "/dash/play", "/dash/vp"],
     );
   });
 
   it("keeps the frame host-agnostic on the fixed desk port", () => {
     const { ctx } = makeContext({ hostname: "cell" });
     assert.equal(
-      ctx.HerdrDashboards.url("poolrad"),
-      "http://cell:8787/dash/poolrad",
+      ctx.HerdrDashboards.url("play"),
+      "http://cell:8787/dash/play",
     );
     assert.equal(
       ctx.HerdrDashboards.url("operations", "192.168.0.209"),

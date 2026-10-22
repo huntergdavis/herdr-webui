@@ -20,14 +20,6 @@
 
   const DASHBOARDS = Object.freeze([
     {
-      key: "poolrad",
-      label: "Poolrad",
-      title: "Poolrad",
-      description: "Completion · strict C and verified identities",
-      icon: "▦",
-      path: "/dash/poolrad",
-    },
-    {
       key: "operations",
       label: "Operations",
       title: "Operations",
