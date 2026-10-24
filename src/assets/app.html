@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>herdr web</title>
+    <title>Dunking Sheep Command Center</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
     <div id="app" class="right-sidebar-collapsed">
       <aside class="side">
         <div class="head">
-          <strong>herdr web</strong
+          <strong>Dunking Sheep Command Center</strong
           ><span class="connection-chip" id="connectionChip" data-state="connecting" title="Connecting: events stream retrying" role="status" aria-live="polite"><span class="connection-dot" aria-hidden="true"></span><span class="sr-only connection-label">Connecting</span></span
           ><button class="mini" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">☾</button
           ><button class="mini" id="shortcutsToggle" title="Shortcuts" aria-label="Help and shortcuts">?</button
@@ -47,18 +47,6 @@
           </div>
         </div>
         <section class="dashboard-view" id="dashboardView" aria-label="Dashboard" hidden>
-          <header class="dashboard-view-head">
-            <div class="dashboard-view-heading">
-              <span class="dashboard-view-kicker">DASHBOARD</span>
-              <h1 id="dashboardTitle">Dashboard</h1>
-              <p id="dashboardMeta"></p>
-            </div>
-            <div class="dashboard-view-actions">
-              <button class="btn" id="dashboardBack" type="button" title="Back to terminals" aria-label="Back to terminals">Terminals</button>
-              <button class="btn" id="dashboardReload" type="button" title="Reload this dashboard" aria-label="Reload this dashboard">Reload</button>
-              <button class="btn" id="dashboardPopout" type="button" title="Open this dashboard in a new tab" aria-label="Open this dashboard in a new tab">Open in new tab</button>
-            </div>
-          </header>
           <div class="dashboard-view-body">
             <iframe id="dashboardFrame" title="Dashboard" loading="eager" referrerpolicy="same-origin"></iframe>
           </div>

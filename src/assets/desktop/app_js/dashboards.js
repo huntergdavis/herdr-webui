@@ -43,6 +43,14 @@
       icon: "✦",
       path: "/dash/vp",
     },
+    {
+      key: "cos",
+      label: "Chief of Agent Staff",
+      title: "Chief of Agent Staff",
+      description: "Fast answers · owner-facing",
+      icon: "◇",
+      path: "/dash/cos",
+    },
   ]);
   const BY_KEY = new Map(DASHBOARDS.map((entry) => [entry.key, entry]));
 

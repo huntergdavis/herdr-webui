@@ -69,7 +69,7 @@ function makeContext({ hostname = "cell", hash = "" } = {}) {
     return buttons.get(key);
   };
   const nav = fakeElement("dashboards");
-  for (const key of ["operations", "play", "vp"]) buttonFor(key);
+  for (const key of ["operations", "play", "vp", "cos"]) buttonFor(key);
   nav.querySelectorAll = (selector) =>
     selector === "[data-dashboard]" ? [...buttons.values()] : [];
   elements.set("dashboards", nav);
@@ -127,11 +127,11 @@ describe("dashboards pane", () => {
     const entries = ctx.HerdrDashboards.entries();
     assert.deepEqual(
       Array.from(entries, (entry) => String(entry.label)),
-      ["Operations", "Play Poolrad", "VP of Agentry"],
+      ["Operations", "Play Poolrad", "VP of Agentry", "Chief of Agent Staff"],
     );
     assert.deepEqual(
       Array.from(entries, (entry) => String(entry.path)),
-      ["/dash/operations", "/dash/play", "/dash/vp"],
+      ["/dash/operations", "/dash/play", "/dash/vp", "/dash/cos"],
     );
   });
 

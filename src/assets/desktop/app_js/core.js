@@ -3847,7 +3847,7 @@ async function loadVersions() {
       String(v.backend || "").startsWith("builtin-");
     const backendLabel = backendIsBuiltin ? "built-in" : v.backend || "offline";
     if (versionsEl) {
-      versionsEl.textContent = `webui ${v.webui || "-"} · backend ${backendLabel}${status}`;
+      versionsEl.textContent = `webui ${v.webui || "-"}${v.built_at ? ` · built ${v.built_at}` : ""} · backend ${backendLabel}${status}`;
       versionsEl.title = `session ${session}${compat.message ? ` · ${compat.message}` : ""}`;
       if (state.herdrAvailable && !state.herdrCompatible)
         versionsEl.title += ` · herdr ${state.herdrVersion || "?"} is not compatible with this WebUI build`;

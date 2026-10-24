@@ -86,6 +86,7 @@ use protocol::*;
 
 const DEFAULT_BIND: &str = "127.0.0.1:8787";
 const HERDR_WEBUI_VERSION: &str = env!("HERDR_WEBUI_VERSION");
+const HERDR_WEBUI_BUILT_AT: &str = env!("HERDR_WEBUI_BUILT_AT");
 const INSTALL_LABEL: &str = "herdr-web";
 const MAX_FRAME_SIZE: usize = 2 * 1024 * 1024;
 const MAX_GRAPHICS_FRAME_SIZE: usize = 32 * 1024 * 1024;
@@ -2634,6 +2635,7 @@ async fn versions(
     let default_backend = default_backend_target(&state);
     Json(json!({
         "webui": HERDR_WEBUI_VERSION,
+        "built_at": HERDR_WEBUI_BUILT_AT,
         "backend": backend.version,
         "backend_mode": state.backend_mode.as_str(),
         "current_backend": current_backend.as_str(),
