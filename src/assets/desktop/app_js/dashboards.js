@@ -20,24 +20,6 @@
 
   const DASHBOARDS = Object.freeze([
     {
-      key: "cos",
-      group: "ask",
-      label: "Chief of Agent Staff",
-      title: "Chief of Agent Staff",
-      description: "Fast answers · owner-facing",
-      icon: "◇",
-      path: "/dash/cos",
-    },
-    {
-      key: "vp",
-      group: "ask",
-      label: "VP of Agentry",
-      title: "VP of Agentry",
-      description: "Agent conversation · owner protected",
-      icon: "✦",
-      path: "/dash/vp",
-    },
-    {
       key: "operations",
       group: "board",
       label: "Operations",
@@ -54,6 +36,24 @@
       description: "Live game · keyboard and save states",
       icon: "▶",
       path: "/dash/play",
+    },
+    {
+      key: "vp",
+      group: "ask",
+      label: "VP of Agentry",
+      title: "VP of Agentry",
+      description: "Agent conversation · owner protected",
+      icon: "✦",
+      path: "/dash/vp",
+    },
+    {
+      key: "cos",
+      group: "ask",
+      label: "Chief of Agent Staff",
+      title: "Chief of Agent Staff",
+      description: "Fast answers · owner-facing",
+      icon: "◇",
+      path: "/dash/cos",
     },
   ]);
   const BY_KEY = new Map(DASHBOARDS.map((entry) => [entry.key, entry]));
@@ -111,8 +111,8 @@
     const nav = docEl("dashboards");
     if (!nav) return;
     const GROUPS = [
-      ["ask", "ASK"],
       ["board", "BOARD"],
+      ["ask", "ASK"],
     ];
     nav.innerHTML = GROUPS.map(
       ([group, heading]) =>
