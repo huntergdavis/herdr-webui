@@ -213,7 +213,7 @@ function updateTitle(wsById, tabById, tabCountsByWorkspace, pane) {
     : pane
       ? pane.pane_id
       : "panel";
-  document.title = `${workspace} • ${panel}`;
+  document.title = "Dunking Sheep Command Center";
 }
 function pushMapList(map, key, value) {
   const rows = map.get(key) || [];

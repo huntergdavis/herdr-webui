@@ -127,11 +127,11 @@ describe("dashboards pane", () => {
     const entries = ctx.HerdrDashboards.entries();
     assert.deepEqual(
       Array.from(entries, (entry) => String(entry.label)),
-      ["Operations", "Play Poolrad", "VP of Agentry", "Chief of Agent Staff"],
+      ["Chief of Agent Staff", "VP of Agentry", "Operations", "Play Poolrad"],
     );
     assert.deepEqual(
       Array.from(entries, (entry) => String(entry.path)),
-      ["/dash/operations", "/dash/play", "/dash/vp", "/dash/cos"],
+      ["/dash/cos", "/dash/vp", "/dash/operations", "/dash/play"],
     );
   });
 

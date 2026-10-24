@@ -910,3 +910,8 @@ body.light .agent-status.done {
   height: 100%;
   width: 100%;
 }
+
+/* Left bar: no empty section. The Agents pane only shows when it has rows. */
+.agents-pane:not(:has(#agents > *)) {
+  display: none;
+}

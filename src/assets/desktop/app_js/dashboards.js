@@ -20,7 +20,26 @@
 
   const DASHBOARDS = Object.freeze([
     {
+      key: "cos",
+      group: "ask",
+      label: "Chief of Agent Staff",
+      title: "Chief of Agent Staff",
+      description: "Fast answers · owner-facing",
+      icon: "◇",
+      path: "/dash/cos",
+    },
+    {
+      key: "vp",
+      group: "ask",
+      label: "VP of Agentry",
+      title: "VP of Agentry",
+      description: "Agent conversation · owner protected",
+      icon: "✦",
+      path: "/dash/vp",
+    },
+    {
       key: "operations",
+      group: "board",
       label: "Operations",
       title: "Operations",
       description: "Live board · deterministic, 30s refresh",
@@ -29,27 +48,12 @@
     },
     {
       key: "play",
+      group: "board",
       label: "Play Poolrad",
       title: "Play Poolrad",
       description: "Live game · keyboard and save states",
       icon: "▶",
       path: "/dash/play",
-    },
-    {
-      key: "vp",
-      label: "VP of Agentry",
-      title: "VP of Agentry",
-      description: "Agent conversation · owner protected",
-      icon: "✦",
-      path: "/dash/vp",
-    },
-    {
-      key: "cos",
-      label: "Chief of Agent Staff",
-      title: "Chief of Agent Staff",
-      description: "Fast answers · owner-facing",
-      icon: "◇",
-      path: "/dash/cos",
     },
   ]);
   const BY_KEY = new Map(DASHBOARDS.map((entry) => [entry.key, entry]));
@@ -106,9 +110,19 @@
   function renderNav() {
     const nav = docEl("dashboards");
     if (!nav) return;
-    nav.innerHTML = DASHBOARDS.map(
-      (entry) =>
-        `<button class="dashboard-nav-item" type="button" data-dashboard="${entry.key}" title="${entry.title} — ${entry.description}"><span class="dashboard-nav-icon" aria-hidden="true">${entry.icon}</span><span class="dashboard-nav-text"><strong>${entry.label}</strong><small>${entry.description}</small></span></button>`,
+    const GROUPS = [
+      ["ask", "ASK"],
+      ["board", "BOARD"],
+    ];
+    nav.innerHTML = GROUPS.map(
+      ([group, heading]) =>
+        `<div class="section-header dashboard-group-header">${heading}</div>` +
+        DASHBOARDS.filter((entry) => entry.group === group)
+          .map(
+            (entry) =>
+              `<button class="dashboard-nav-item" type="button" data-dashboard="${entry.key}" title="${entry.title} — ${entry.description}"><span class="dashboard-nav-icon" aria-hidden="true">${entry.icon}</span><span class="dashboard-nav-text"><strong>${entry.label}</strong><small>${entry.description}</small></span></button>`,
+          )
+          .join(""),
     ).join("");
   }
 

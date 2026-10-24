@@ -479,7 +479,7 @@ if (headTitle) {
   const brand = document.createElement("div");
   brand.className = "brand";
   brand.innerHTML =
-    '<img src="/favicon.svg" alt=""><div class="brand-text"><span class="brand-title">Herdr</span><span class="brand-subtitle">WebUI</span></div>';
+    '<img src="/favicon.svg" alt=""><div class="brand-text"><span class="brand-title">Dunking Sheep Command Center</span><span class="brand-subtitle">WebUI</span></div>';
   headTitle.replaceWith(brand);
 }
 const sectionEl = document.querySelector(".side .section");
@@ -487,7 +487,7 @@ if (sectionEl && !el("workspacePane")) {
   const versionsEl = el("versions"),
     workspacesEl = el("workspaces"),
     agentsEl = el("agents"),
-    oldAgentsHeader = document.querySelector(".section-header");
+    oldAgentsHeader = agentsEl && agentsEl.previousElementSibling && agentsEl.previousElementSibling.classList.contains("section-header") ? agentsEl.previousElementSibling : null;
   const split = document.createElement("div");
   split.className = "sidebar-split";
   const workspacePane = document.createElement("div");
@@ -495,7 +495,7 @@ if (sectionEl && !el("workspacePane")) {
   workspacePane.className = "sidebar-pane workspaces-pane";
   workspacePane.insertAdjacentHTML(
     "beforeend",
-    '<div class="section-header">Workspaces</div><div class="workspace-context-actions" id="workspaceContextActions"></div>',
+    '<div class="section-header">Terminals</div><div class="workspace-context-actions" id="workspaceContextActions"></div>',
   );
   const workspaceScroll = document.createElement("div");
   workspaceScroll.className = "sidebar-scroll";
